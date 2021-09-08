@@ -17,5 +17,6 @@ module.exports = (sequelize) => {
     temporada:{
         type: DataTypes.STRING
     }
-  });
+  },
+  {freezeTableName: true,})
 };

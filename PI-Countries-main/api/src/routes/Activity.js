@@ -3,7 +3,8 @@ const router = Router();
 const {Actividad, Country} = require('../db')
 
 
-router.post('/', async function(req,res){
+router.post('/', async (req,res)=>{
+    console.log("hola");
 const {name,dificultad,duracion,temporada,countryid} = req.body
 try {
     if(name && dificultad && duracion && temporada){

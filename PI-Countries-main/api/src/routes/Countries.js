@@ -1,29 +1,19 @@
 const { Router } = require('express');
 const router = Router();
-const axios = require ('axios');
 const {Actividad, Country} = require('../db')
-
+const {Op} = require('sequelize')
+ 
 
 router.get('/', async (req, res) =>{
-    let Name = req.query.name
-    console.log(Name);
+let Name = req.query.name
     if (Name) {
         try{
-        const paQuery = await Country.findOne({where: {name: Name}, include: Actividad})
-        if (paQuery) {
-            var PId = {
-                id: paQuery.id,
-                Nombre: paQuery.name,
-                Bandera: paQuery.img,
-                Continente: paQuery.continente,
-                Capital: paQuery.capital,
-                Subregion: paQuery.subregion,
-                Area: paQuery.area,
-                Poblacion: paQuery.poblacion
-            }
-            return res.json(PId)
+        let paQuery = await Country.findAll({
+            where:{name:{[Op.iLike]: '%' + Name + '%'}}})
+        if (!paQuery.length) {
+            return res.status(404).json('No se encontro el pais que estas buscando')
         }else{
-            return res.send('No se encontro el pais que estas buscando')
+            return res.json(paQuery)
         }
         }catch(err){
             console.log(err);

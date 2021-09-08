@@ -32,7 +32,7 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER
     },
   },
-  {timestamps: false}
-  );
-
+  {timestamps: false},
+  {freezeTableName: true,}
+  )
 };
