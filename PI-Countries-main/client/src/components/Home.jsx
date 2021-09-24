@@ -1,10 +1,13 @@
+import './styles/Home.css'
 import React from "react";
 import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import { getPaises,  filtradoPaises, filtradoPoblacion, filtradoAlfa} from '../actions';
+import { getPaises,  filtradoPaises, filtradoPoblacion, filtradoAlfa, getActividad, filtradoActividad} from '../actions';
 import { Link } from 'react-router-dom';
 import Card from './Card';
 import Paginado from "./Paginado";
+import SearchBar from "./SearchBar";
+
 
 export default function Home(){
     const dispatch = useDispatch()
@@ -15,14 +18,19 @@ export default function Home(){
     const [, setAZ] = useState('')
     const ultimoPais = currentPage * paisesPerPage
     const primerPais = ultimoPais - paisesPerPage
-    let paisesPageActual = paisesSeleccionados.slice(primerPais, ultimoPais)
+    const paisesPageActual = paisesSeleccionados.slice(primerPais, ultimoPais)
+    const nombreActividad = useSelector((state)=> state.actividad)
+    const paginado = (NumeroPage)=>{setcurrentPage(NumeroPage)}
+    const prueba = nombreActividad.map((e)=> e.name)
+    const unicos = [... new Set(prueba)];
 
-const paginado = (NumeroPage)=>{
-    setcurrentPage(NumeroPage)
-}
 
 useEffect(()=>{
     dispatch(getPaises())
+},[dispatch])
+
+useEffect(()=>{
+    dispatch(getActividad())
 },[dispatch])
 
 //reseteo Paises
@@ -39,20 +47,28 @@ function handleFiltradoPoblacion(ev){
     dispatch(filtradoPoblacion(ev.target.value))
     setcurrentPage(1);
     setOrder(`Ordenado ${ev.target.value}`)
-}
+}   
 function handleAlfa(ev){
     ev.preventDefault();
     dispatch(filtradoAlfa(ev.target.value))
     setAZ(`Ordenado ${ev.target.value}`)
 }
+function handleActividades(ev) {
+    dispatch(filtradoActividad(ev.target.value))
+}
 
 return(
-    <div>
-        <Link to = '/actividades'>Crear Actividades</Link>
-        <h1>Paises</h1>
-        <button onClick={ev=> {handleClick(ev)}}>Volver a cargar paises</button>
-
-    <div>
+    <div className = 'container'>
+        <div className = 'searchbar'>
+    <SearchBar/> 
+    <Link to = '/actividades'><button>Crear Actividades</button></Link>
+    </div>
+    <div className>
+    <select onChange = {ev => handleActividades(ev)}>
+        {unicos.map((ev)=>(
+        <option value ={ev} > {ev} </option>
+    ))}
+    </select>
     <select onChange = {ev => handleFitroEstado(ev)} >
         <option value ='All'>Todos</option>
         <option value ='Asia'>Asia</option>
@@ -70,20 +86,22 @@ return(
     <option value ='asc'>A-Z</option>
     <option value ='des'>Z-A</option>
     </select>
+    <button onClick={ev=> {handleClick(ev)}}>Volver a cargar paises</button>
+    </div>
+    <br/>
+    <div>
     <Paginado
     paisesPerPage = {paisesPerPage}
     paisesSeleccionados={paisesSeleccionados.length}
     paginado={paginado}>
-    </Paginado>
-    {
-    paisesPageActual?.map(el=>{
+    </Paginado></div> 
+    {paisesPageActual?.map(el=>{
     return(
-    <div key={el.id}>
+    <div key={el.id} className = 'card'>
     <Link to= {'/home/' + el.id}>
     <Card name={el.name} continente={el.continente} imagen={el.img} poblacion={el.poblacion}  />
     </Link>
     </div>
     )})}
     </div>
-</div>
 )}

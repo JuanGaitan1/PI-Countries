@@ -1,7 +1,9 @@
 
 const inicioState = {
     paises: [],
-    allPaises: []
+    allPaises: [],
+    actividad: [],
+    detail: []
 }
 //guardo dos veces los paises para que cuando los busque en options no se me pise paises con los paises filtrados
 function rootReducer (state = inicioState, action) {
@@ -12,13 +14,28 @@ function rootReducer (state = inicioState, action) {
             paises: action.payload,
             allPaises : action.payload
         }
+    case 'GET_SEARCH':
+        return{
+            ...state,
+            paises: action.payload
+        } 
+    case 'GET_ACTIVIDAD':
+        return{
+            ...state,
+            actividad : action.payload
+        }
     case 'FILTER_BY_CONTINENTE':
-    const allPai = state.allPaises
+        const allPai = state.allPaises
         const estadoFiltrado = action.payload === 'All' ? allPai : allPai.filter(el => el.continente === action.payload)
         return{
             ...state,
             paises: estadoFiltrado
         }
+    case 'POST_ACTIVIDAD':
+        return {
+            ...state
+        }
+   
     case 'FILTER_BY_POBLACION':
     const poblacion = action.payload === 'desendente' ? state.paises.sort((a,b) => a.poblacion - b.poblacion) :
         state.paises.sort((a,b) => b.poblacion - a.poblacion)
@@ -26,6 +43,17 @@ function rootReducer (state = inicioState, action) {
             ...state,
             paises: poblacion
         }
+    case 'FILTER_BY_ACTIVITY':
+        const array = []
+         state.allPaises.map(el => el.Actividads.forEach(element => {
+        if (element.name === action.payload) {
+            array.push(el)
+        }
+    }))
+    return{
+        ...state,
+        paises: array
+    }
     case 'FILTER_BY_ALFA':
         const alfaNombre = action.payload === 'asc' ? state.paises.sort(function (a, b) {
         if (a.name > b.name) {
@@ -47,6 +75,11 @@ function rootReducer (state = inicioState, action) {
         return {
             ...state,
             paises: alfaNombre
+        }
+    case 'GET_DETAIL':
+        return{
+            ...state,
+            detail: action.payload
         }
         default:
             return state;

@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
-const {Actividad, Country} = require('../db')
-const {Op} = require('sequelize')
+const {Actividads, Country} = require('../db')
+const {Op} = require('sequelize');
  
 
 router.get('/', async (req, res) =>{
@@ -20,7 +20,9 @@ let Name = req.query.name
         }
     }
 try{
-    const paisesBd = await Country.findAll({})
+    const paisesBd = await Country.findAll({
+        include: {model: Actividads}
+    })
     return res.json(paisesBd)
 }catch(err){
     console.log(err);
@@ -31,7 +33,7 @@ router.get('/:id', async (req,res)=>{
     const {id} = req.params;
 try{
     if (id.length > 2) {
-        var ap = await Country.findOne({where: {id: id}, include: Actividad})
+        var ap = await Country.findOne({where: {id: id}, include: Actividads})
         if (ap) {
             var paisesId = {
                 id: ap.id,
@@ -41,7 +43,8 @@ try{
                 Capital: ap.capital,
                 Subregion: ap.subregion,
                 Area: ap.area,
-                Poblacion: ap.poblacion
+                Poblacion: ap.poblacion,
+                Actividads: ap.Actividads
             }
             return res.json(paisesId)
         }

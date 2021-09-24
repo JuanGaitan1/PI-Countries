@@ -1,0 +1,18 @@
+.prueba{
+    width: 500px;
+    height: 300px;
+    border-radius: 5px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    text-align: center;
+    
+}
+.body{
+    justify-content: space-between;
+}
+.boton{
+    border-radius: 10px;
+}
+.actividad{
+    background-color: rgba(245, 245, 220, 0.246);
+}
