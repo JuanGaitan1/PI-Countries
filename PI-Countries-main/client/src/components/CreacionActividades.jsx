@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import {postActividad, getActividad} from '../actions/index'
 import { useDispatch, useSelector } from "react-redux";
 import './styles/Actividades.css'
-
+import StyleHome from "./styles/Home.module.css"
 function validate(input) {
     if(!input.name){
         alert("Se requiere un nombre") 
@@ -82,18 +82,19 @@ function hadleSubmit(ev) {
     })
 }
     return(
-        <div className = 'body'>
+        <div>
             <h1>Crea tu actividad</h1>
-            <Link to = '/home'><button>Volver</button></Link>
+            <Link to = '/home'><button className={StyleHome.btnAdmin}>Volver</button></Link> 
+            <div className={StyleHome.body}>
             <form className = 'prueba'>
                 <div>
                     <label>Actividad:</label>
-                    <input type = 'text' value = {input.name} name ='name'
+                    <input className={StyleHome.btnAdmin} type = 'text' value = {input.name} name ='name'
                     onChange={(ev) => hadleChange(ev)}></input>
                 </div>
                 <div>
                     <label>Dificultad:</label>
-                    <select onChange = {(ev)=> hadleDificultad(ev)}>
+                    <select className={StyleHome.btnAdmin} onChange = {(ev)=> hadleDificultad(ev)}>
                     <option value='1'>1</option>
                     <option value='2'>2</option>
                     <option value='3'>3</option>
@@ -103,12 +104,12 @@ function hadleSubmit(ev) {
                 </div>
                 <div>
                     <label>Duracion:</label>
-                    <input type = 'string' value = {input.duracion} name ='duracion'
+                    <input className={StyleHome.btnAdmin} type = 'string' value = {input.duracion} name ='duracion'
                     onChange={(ev) => hadleChange(ev)}></input>
                 </div>
                 <div>
                     <label>Temporada:</label>
-                    <select onChange={(ev) => hadleTemporada(ev)}>
+                    <select className={StyleHome.btnAdmin} onChange={(ev) => hadleTemporada(ev)}>
                     <option value ='verano'>Verano</option>
                     <option value ='invierno'>Invierno</option>
                     <option value='otoño'>Otoño</option>
@@ -116,19 +117,19 @@ function hadleSubmit(ev) {
                     <option value='todo'>Todo el año</option>
                     </select>
                 </div>
-                <label>Paises: <select onChange = {(ev) => hadleSelect(ev)}>
+                <label>Paises: <select className={StyleHome.btnAdmin} onChange = {(ev) => hadleSelect(ev)}>
                     {paisesSeleccionados.map((ev)=>(
                         <option value ={ev.id} >{ev.name} </option>
                     ))}
                 </select></label>
-            <button type='submit' onClick={(ev) => hadleSubmit(ev)}>Agregar</button>
+            <button className={StyleHome.btnAdmin} type='submit' onClick={(ev) => hadleSubmit(ev)}>Agregar</button>
             </form>
             {input.countryid.map(el=>
-                <div>
+                <div className={StyleHome.Pais}>
                     <h6>{el}</h6>
-                    <button className ='boton' onClick={()=> hadleDelete(el)}>x</button>
+                    <button className={StyleHome.btnAdmin} className ='boton' onClick={()=> hadleDelete(el)}>x</button>
                 </div>)}
         </div>
-
+    </div>
     )
 }

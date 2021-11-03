@@ -30,3 +30,13 @@ body{
     align-items: center;
     margin: 10px
 }
+
+.btnAdmin{
+    padding: 5px 20px;
+    border: none;
+}
+.btnAdmin:hover{
+    background-color: cornflowerblue;
+    color: white;
+    transition:0.5s;
+}

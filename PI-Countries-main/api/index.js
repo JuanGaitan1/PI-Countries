@@ -23,17 +23,18 @@ const axios = require ('axios');
 const {Country} = require('./src/db.js');
 //precargando datos de la api
 const peticionApi = async function (){
-  const Api = await axios.get(`https://restcountries.eu/rest/v2/all`)
+  const Api = await axios.get(`https://restcountries.com/v3/all`)
   const datosBd = Api.data.map(el =>{
     return {
-      id: el.alpha3Code,
-      name: el.name,
-      img: el.flag,
+      id: el.cca3,
+      name: el.name.common,
+      img: el.flags[0],
       continente: el.region,
-      capital: el.capital,
+      capital: el.capital ===undefined || el.capital.lenght < 1 ? 'undefined' : el.capital[0],
       subregion: el.subregion,
       area: el.area,
-      poblacion: el.population
+      poblacion: el.population,
+      region: el.region
     }})
   const aux = await Country.bulkCreate(datosBd) //guardando en la base de datos
 }

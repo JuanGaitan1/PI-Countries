@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import Card from './Card';
 import Paginado from "./Paginado";
 import SearchBar from "./SearchBar";
-
+import StyleHome from "./styles/Home.module.css"
 
 export default function Home(){
     const dispatch = useDispatch()
@@ -56,20 +56,23 @@ function handleAlfa(ev){
 function handleActividades(ev) {
     dispatch(filtradoActividad(ev.target.value))
 }
-
+console.log(unicos.length );
 return(
     <div className = 'container'>
         <div className = 'searchbar'>
     <SearchBar/> 
-    <Link to = '/actividades'><button>Crear Actividades</button></Link>
+    <Link to = '/actividades'><button className={StyleHome.btnAdmin}>Crear Actividades</button></Link>
     </div>
     <div className>
-    <select onChange = {ev => handleActividades(ev)}>
-        {unicos.map((ev)=>(
-        <option value ={ev} > {ev} </option>
+        { unicos.length === 0?
+        <p>Crea actividades para filtrarlas</p>
+    : <select className={StyleHome.btnAdmin} onChange = {ev => handleActividades(ev)}>
+    {unicos.map((ev)=>(
+    <option value ={ev} > {ev} </option>
     ))}
-    </select>
-    <select onChange = {ev => handleFitroEstado(ev)} >
+</select>
+    }
+    <select  className={StyleHome.btnAdmin} onChange = {ev => handleFitroEstado(ev)} >
         <option value ='All'>Todos</option>
         <option value ='Asia'>Asia</option>
         <option value='Europe'>Europa</option>
@@ -78,15 +81,15 @@ return(
         <option value='Polar'>Polar</option>
         <option value='Americas'>Americas</option>
     </select>
-    <select onChange ={ev => handleFiltradoPoblacion(ev)}>
+    <select className={StyleHome.btnAdmin} onChange ={ev => handleFiltradoPoblacion(ev)}>
         <option value ='asendente'>Mayor Poblacion</option>
         <option value ='desendente'>Menor Poblacion</option>
     </select>
-    <select onChange ={ev => handleAlfa(ev)}>
+    <select className={StyleHome.btnAdmin} onChange ={ev => handleAlfa(ev)}>
     <option value ='asc'>A-Z</option>
     <option value ='des'>Z-A</option>
     </select>
-    <button onClick={ev=> {handleClick(ev)}}>Volver a cargar paises</button>
+    <button className={StyleHome.btnAdmin} onClick={ev=> {handleClick(ev)}}>Volver a cargar paises</button>
     </div>
     <br/>
     <div>
